@@ -1,0 +1,14 @@
+*~
+*#
+*pb2.py
+
+*.ipynb
+*.pdf
+*.png
+*.pb.go
+*.pickle
+*.pyc
+*.pyz
+*.zip
+
+__pycache__
