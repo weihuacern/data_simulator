@@ -1,3 +1,4 @@
+import pandas as pd
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
@@ -24,7 +25,7 @@ class SQLGenerator(object):
 
     # Function to create the table with specific schema
     # Note, the key_col_name is required as we have requirement on scanner
-    def sql_create_table(self, tab_name, key_col_name, col_name_list):
+    def create_sql_table(self, tab_name, key_col_name, col_name_list):
         # Generate columns
         # FIXME, for now, just support string type for all field
         sql_alchemy_key_cols = [Column(key_col_name, String(100), primary_key=True)]
@@ -44,6 +45,18 @@ class SQLGenerator(object):
             print("Table: ", _t)
         return
 
+    # load table from sqlite to pandas dataframe
+    def load_sql_to_pandas(self):
+        """
+        input: sqlite db_name, table_name
+        output: pandas dataframe
+        """
+        res_df = pd.DataFrame()
+        return res_df
+
+    def write_pandas_to_sql(self):
+        return
+
 if __name__ == "__main__":
     mySQLGenerator = SQLGenerator("mysql+pymysql://root:Helios123@192.168.7.74:3306/customers_info")
-    mySQLGenerator.sql_create_table("test_small", "ssn", SQL_SALES_TABLE_CATALOG)
+    mySQLGenerator.create_sql_table("test_small", "ssn", SQL_SALES_TABLE_CATALOG)
