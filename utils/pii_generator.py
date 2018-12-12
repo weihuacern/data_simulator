@@ -1,3 +1,4 @@
+#from collections import namedtuple
 import random
 import time
 import uuid
@@ -12,12 +13,13 @@ from constants import PII_CATALOG
 from utils import rand_x_digit_num
 
 #ssn, name, gender, phone number, email, blood_type
-class fakepiientry:
+class FakePIIRow:
     def __init__(self):
-        self.pii_catalog = PII_CATALOG
         self.gender = ["Male", "Female"]
         self.email_domain = ["hotmail.com", "gmail.com", "aol.com", "mail.com", "mail.kz", "yahoo.com"]
         self.blood_type = ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"]
+        self.race = ["White", "African American", "Native American"]
+        self.religion = ["Christianity", "Islam", "Buddhism", "Hinduism", "Atheism", "Agnosticism"]
 
     def __generate_uniform(self, target_list):
         return target_list[random.randint(0, len(target_list)-1)]
@@ -37,21 +39,25 @@ class fakepiientry:
     def generate_pii_row(self, seed):
         """
         input: one integer seed for this generation
-        output: a dictionary, key is defined in the pii_catalog
+        output: a dictionary, key is defined in the PII_CATALOG
         """
-        pii_ssn = rand_x_digit_num(9, False)
+        pii_ssn = str(rand_x_digit_num(9, False))
         pii_name = names.get_first_name() + ' ' +  names.get_last_name()
         pii_gender = self.__generate_uniform(self.gender)
         pii_phone = self.__generate_phonenumber()
         pii_email = self.__generate_email(pii_name)
         pii_blood_type = self.__generate_uniform(self.blood_type)
-        res_keys = self.pii_catalog
-        res_vals = [pii_ssn, pii_name, pii_gender, pii_phone, pii_email, pii_blood_type]
+        pii_race = self.__generate_uniform(self.race)
+        pii_religion = self.__generate_uniform(self.religion)
+
+        res_keys = PII_CATALOG
+        res_vals = [pii_ssn, pii_name, pii_gender, pii_phone, pii_email, pii_blood_type, pii_race, pii_religion]
+        assert len(res_keys) == len(res_vals), "length of key and length of value are not equal"
         res = dict(zip(res_keys, res_vals))
         return res
 
 if __name__ == "__main__":
-    myfakepiientry = fakepiientry()
+    myFakePIIRow = FakePIIRow()
     for i in range(100, 105):
-        this_pii_row = myfakepiientry.generate_pii_row(i)
+        this_pii_row = myFakePIIRow.generate_pii_row(i)
         print(this_pii_row)
